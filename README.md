@@ -252,20 +252,71 @@ backend/
 
 ```text
 frontend/
-└── src/
-    ├── api/              # Axios instance + TanStack Query client
-    ├── components/
-    │   ├── common/
-    │   ├── forms/
-    │   ├── analytics/
-    │   ├── layout/
-    │   └── url/
-    ├── pages/            # Home, Dashboard, Analytics, Login, Register, NotFound
-    ├── hooks/            # useAuth, useUrls, useAnalytics
-    ├── services/         # API call wrappers
-    ├── routes/           # AppRoutes, ProtectedRoute, PublicRoute
-    ├── context/          # AuthContext
-    └── utils/            # copyToClipboard, formatDate, generateQrCode
+│
+├── public/
+│
+├── src/
+│   │
+│   ├── api/
+│   │   ├── axios.js
+│   │   └── queryClient.js
+│   │
+│   ├── assets/
+│   │   ├── images/
+│   │   ├── icons/
+│   │   └── logos/
+│   │
+│   ├── components/
+│   │   ├── common/
+│   │   ├── forms/
+│   │   ├── analytics/
+│   │   ├── layout/
+│   │   └── url/
+│   │
+│   ├── pages/
+│   │   ├── Home/
+│   │   ├── Dashboard/
+│   │   ├── Analytics/
+│   │   ├── Login/
+│   │   ├── Register/
+│   │   └── NotFound/
+│   │
+│   ├── hooks/
+│   │   ├── useAuth.js
+│   │   ├── useUrls.js
+│   │   └── useAnalytics.js
+│   │
+│   ├── services/
+│   │   ├── auth.service.js
+│   │   ├── url.service.js
+│   │   └── analytics.service.js
+│   │
+│   ├── routes/
+│   │   ├── AppRoutes.jsx
+│   │   ├── ProtectedRoute.jsx
+│   │   └── PublicRoute.jsx
+│   │
+│   ├── context/
+│   │   └── AuthContext.jsx
+│   │
+│   ├── utils/
+│   │   ├── copyToClipboard.js
+│   │   ├── formatDate.js
+│   │   └── generateQrCode.js
+│   │
+│   ├── constants/
+│   │   ├── api.js
+│   │   └── routes.js
+│   │
+│   ├── styles/
+│   │
+│   ├── App.jsx
+│   └── main.jsx
+│
+├── .env
+├── package.json
+├── vite.config.js
+└── README.md
 ```
 
 ---
