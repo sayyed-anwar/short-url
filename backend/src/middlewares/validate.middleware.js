@@ -1,15 +1,17 @@
-const validate = (schema) => (req, res, next) => {
-  const result = schema.safeParse({
-    body: req.body,
-    params: req.params,
-    query: req.query,
-  });
+export const validate = (schema) => {
+  return (req, res, next) => {
+    const result = schema.safeParse(req.body);
 
-  if (!result.success) {
-    return res.status(400).json({ errors: result.error.issues });
-  }
+    if (!result.success) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation failed",
+        errors: result.error.flatten().fieldErrors,
+      });
+    }
 
-  return next();
+    req.validatedData = result.data;
+
+    next();
+  };
 };
-
-export default validate;

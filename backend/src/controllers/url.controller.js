@@ -2,7 +2,7 @@ import * as urlService from "../services/url.Service.js";
 
 export const createUrl = async (req, res, next) => {
   try {
-    const { originalUrl } = req.body;
+    const { originalUrl } = req.validatedData;
 
     const url = await urlService.createShortUrl(originalUrl);
     return res.status(201).json({
