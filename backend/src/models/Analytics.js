@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const analyticsSchema = new mongoose.Schema(
   {
-    userId: {
+    urlId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Url",
       required: true,
@@ -19,7 +19,7 @@ const analyticsSchema = new mongoose.Schema(
     },
     referrer: {
       type: String,
-      default: Date.now,
+      default: "direct",
     },
     clickedAt: {
       type: Date,

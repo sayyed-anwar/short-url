@@ -1,6 +1,6 @@
 import Analytics from "../models/Analytics.js";
 
-export const createAnalyticsEvent = async (date) => {
+export const createAnalyticsEvent = async (data) => {
   return Analytics.create(data);
 };
 
