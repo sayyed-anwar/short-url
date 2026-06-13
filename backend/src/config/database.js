@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { env } from "./env.js";
+import logger from "../utils/logger.js";
 
 export const connectDB = async () => {
   if (!env.MONGODB_URI) {
@@ -9,10 +10,14 @@ export const connectDB = async () => {
   try {
     await mongoose.connect(env.MONGODB_URI);
 
-    console.log("MongoDB Connected");
+    logger.info({
+      event: "DATABASE_CONNECTED",
+    });
   } catch (error) {
-    console.error("Database Connection Failed");
-    console.error(error.message);
+    logger.error({
+      event: "DATABASE_CONNECTION_FAILED",
+      message: error.message,
+    });
 
     process.exit(1);
   }

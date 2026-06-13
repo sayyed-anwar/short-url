@@ -1,16 +1,22 @@
 import { createClient } from "redis";
 import { env } from "./env.js";
+import logger from "../utils/logger.js";
 
 const redisClient = createClient({
-  url: process.env.REDIS_URL,
+  url: env.REDIS_URL,
 });
 
 redisClient.on("error", (error) => {
-  console.log("Redis Error", error.message);
+  logger.error({
+    event: "REDIS_ERROR",
+    message: error.message,
+  });
 });
 
 redisClient.on("connect", () => {
-  console.log("Redis Connected");
+  logger.info({
+    event: "REDIS_CONNECTED",
+  });
 });
 
 export const connectRedis = async () => {
