@@ -2,6 +2,7 @@ import * as urlRepository from "../repositories/url.repository.js";
 import * as analyticsService from "./analytics.service.js";
 
 import AppError from "../utils/AppError.js";
+import logger from "../utils/logger.js";
 
 import { getCache, setCache, deleteCache } from "../cache/redisCache.js";
 
@@ -11,15 +12,21 @@ export const getOriginalUrl = async (shortCode, clickContext) => {
   const cachedUrl = await getCache(cacheKey);
 
   if (cachedUrl) {
-    console.log("CACHE HIT");
+    logger.info({
+      event: "CACHE_HIT",
+      shortCode,
+    });
 
     const data = JSON.parse(cachedUrl);
-    console.log("NOW:", new Date());
-    console.log("EXPIRES:", data.expiresAt);
-    console.log("EXPIRED:", data.expiresAt < new Date());
 
     if (data.expiresAt && new Date(data.expiresAt) < new Date()) {
       await deleteCache(cacheKey);
+
+      logger.warn({
+        event: "EXPIRED_URL_ACCESS",
+        shortCode,
+        source: "cache",
+      });
 
       throw new AppError("URL has expired", 410);
     }
@@ -31,19 +38,30 @@ export const getOriginalUrl = async (shortCode, clickContext) => {
     return data.originalUrl;
   }
 
-  console.log("CACHE MISS");
+  logger.info({
+    event: "CACHE_MISS",
+    shortCode,
+  });
 
   const url = await urlRepository.findByShortCode(shortCode);
-  console.log("NOW:", new Date());
-  console.log("EXPIRES:", url.expiresAt);
-  console.log("EXPIRED:", url.expiresAt < new Date());
 
   if (!url) {
+    logger.warn({
+      event: "SHORT_URL_NOT_FOUND",
+      shortCode,
+    });
+
     throw new AppError("Short URL not found", 404);
   }
 
   if (url.expiresAt && url.expiresAt < new Date()) {
     await deleteCache(cacheKey);
+
+    logger.warn({
+      event: "EXPIRED_URL_ACCESS",
+      shortCode,
+      source: "database",
+    });
 
     throw new AppError("URL has expired", 410);
   }

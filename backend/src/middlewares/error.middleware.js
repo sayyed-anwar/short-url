@@ -1,5 +1,11 @@
+import logger from "../utils/logger.js";
+
 const errorHandler = (err, req, res, next) => {
-  console.error(err);
+  logger.error({
+    err,
+    path: req.originalUrl,
+    method: req.method,
+  });
 
   if (err.code === 11000) {
     return res.status(409).json({
